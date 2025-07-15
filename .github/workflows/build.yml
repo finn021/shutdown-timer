@@ -1,0 +1,32 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches:
+      - main  # or change to 'master' or your default branch
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build EXE
+        run: pyinstaller --onefile shutdown_timer.py
+
+      - name: Upload EXE Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shutdown-timer-exe
+          path: dist/shutdown_timer.exe
