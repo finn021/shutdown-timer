@@ -6,8 +6,6 @@ def schedule_shutdown_minutes(minutes):
         seconds = int(minutes) * 60
         subprocess.run(["shutdown", "/s", "/t", str(seconds)], shell=True)
         status_label.config(text=f"Shutdown scheduled in {minutes} minute(s).")
-    except ValueError:
-        status_label.config(text="Please enter a valid number.")
 
 def schedule_from_entry():
     minutes = time_var.get()
@@ -18,22 +16,19 @@ def cancel_shutdown():
     status_label.config(text="Shutdown cancelled.")
 
 def validate_entry(*args):
-    """Enable button only if entry has a valid positive number."""
     text = time_var.get()
     if text.isdigit() and int(text) > 0:
         schedule_button.config(state="normal")
     else:
         schedule_button.config(state="disabled")
 
-# GUI setup
 root = tk.Tk()
 root.title("Shutdown Timer")
 root.geometry("350x250")
-root.minsize(320, 240)  # Prevent shrinking
+root.minsize(350, 250)
 
-# Entry + binding
 time_var = tk.StringVar()
-time_var.trace_add("write", validate_entry)  # Monitor changes
+time_var.trace_add("write", validate_entry)
 
 entry_label = tk.Label(root, text="Custom time before shutdown (minutes):")
 entry_label.pack()
@@ -48,7 +43,7 @@ schedule_button.pack(pady=5)
 preset_frame = tk.Frame(root)
 preset_frame.pack(pady=10)
 
-tk.Label(preset_frame, text="Quick Schedule:").grid(row=0, column=0, columnspan=4)
+tk.Label(preset_frame, text="Quick Schedule").grid(row=0, column=0, columnspan=4)
 
 btn_15min = tk.Button(preset_frame, text="15 min", width=8, command=lambda: schedule_shutdown_minutes(15))
 btn_30min = tk.Button(preset_frame, text="30 min", width=8, command=lambda: schedule_shutdown_minutes(30))

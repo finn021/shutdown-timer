@@ -1,9 +1,9 @@
-name: Build Windows EXE
+name: Build
 
 on:
   push:
     branches:
-      - main  # or change to 'master' or your default branch
+      - main
   workflow_dispatch:
 
 jobs:
@@ -23,9 +23,9 @@ jobs:
         run: pip install pyinstaller
 
       - name: Build EXE
-        run: pyinstaller --onefile shutdown-timer.py
+        run: pyinstaller --onefile app.py --name shutdown-timer --noconsole
 
-      - name: Upload EXE Artifact
+      - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: shutdown-timer-exe
